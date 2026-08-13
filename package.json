@@ -1,0 +1,62 @@
+{
+  "name": "disk-cleaner",
+  "productName": "磁盘清理大师",
+  "version": "0.1.0",
+  "description": "磁盘清理大师：正则匹配疑似文件 + LLM/联网确认 + treemap 视图 + 安全清理",
+  "main": "electron/main.js",
+  "author": "磁盘清理大师 <2652816003@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron .",
+    "build": "vite build",
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.5.1",
+    "antd": "^5.21.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "trash": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^9.0.1",
+    "electron": "^33.0.0",
+    "electron-builder": "^26.15.3",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.6",
+    "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "com.shiki.diskcleaner",
+    "productName": "磁盘清理大师",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "rules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

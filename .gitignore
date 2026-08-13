@@ -1,0 +1,19 @@
+# 依赖
+node_modules/
+
+# 构建/打包产物
+dist*/
+dist/
+release*/
+out/
+
+# 运行时数据（在 AppData，不入库）
+disk-cleaner-data.json
+disk-cleaner-lastscan.json
+
+# 日志与临时
+*.log
+npm-debug.log*
+.DS_Store
+*.tmp
+report.json

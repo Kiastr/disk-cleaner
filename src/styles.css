@@ -1,0 +1,70 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #0e111d;
+  color: #d8dcf0;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a3350; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #3a4470; }
+
+/* 侧边栏菜单项圆角 + 间距 */
+.ant-menu .ant-menu-item {
+  border-radius: 8px;
+  margin: 4px 0;
+  height: 42px;
+  line-height: 42px;
+}
+.ant-menu-dark .ant-menu-item-selected {
+  background: linear-gradient(90deg, #6e63f6 0%, #8477ff 100%) !important;
+}
+
+/* 表格行 hover 更明显 */
+.ant-table-tbody > tr:hover > td {
+  background: #1c2238 !important;
+}
+
+/* 输入框聚焦边框 */
+.ant-input:focus, .ant-input-focused, .ant-select-focused .ant-select-selector {
+  border-color: #6e63f6 !important;
+  box-shadow: 0 0 0 2px rgba(110, 99, 246, 0.2) !important;
+}
+
+/* 主按钮渐变 */
+.ant-btn-primary {
+  background: linear-gradient(90deg, #6e63f6 0%, #8477ff 100%);
+  border: none;
+}
+.ant-btn-primary:hover {
+  background: linear-gradient(90deg, #5d52ea 0%, #7566f0 100%) !important;
+}
+
+/* 页面标题与描述 */
+.page-title {
+  color: #eef0ff;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.3px;
+}
+.page-desc {
+  color: #8b93b3;
+  font-size: 13px;
+  margin: 0 0 18px 0;
+}
+
+/* 卡片 */
+.card {
+  background: #161b2e;
+  border: 1px solid #232a42;
+  border-radius: 12px;
+  padding: 18px;
+}
+
