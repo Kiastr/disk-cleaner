@@ -41,3 +41,10 @@ rules/cleanup_rules.json   # 内置规则库（scope: dirname/path/filename）
 - 数据存于 Electron userData 目录下的 `disk-cleaner-data.json`
 - 删除默认走回收站（`trash` 库），不直接 rm
 - 扫描自动跳过 junction/symlink（避免循环与重复计数）、pagefile/swapfile/WinSxS 等保护名单
+
+## 开源协议
+本项目以 **GNU General Public License v3.0（GPL-3.0）** 发布。
+
+- 完整许可证文本见仓库根目录 [`LICENSE`](./LICENSE) 文件。
+- 你可以自由使用、修改、分发本软件，但任何分发（含修改后的版本）都必须以相同的 GPL-3.0 协议开源，并提供对应的源代码。
+- 本软件按「原样」提供，不附带任何担保（详见 LICENSE 第 15、16 条）。

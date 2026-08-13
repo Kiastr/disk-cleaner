@@ -5,7 +5,7 @@
   "description": "磁盘清理大师：正则匹配疑似文件 + LLM/联网确认 + treemap 视图 + 安全清理",
   "main": "electron/main.js",
   "author": "磁盘清理大师 <2652816003@qq.com>",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "scripts": {
     "dev": "electron .",
     "build": "vite build",
