@@ -106,6 +106,40 @@ function fmtSize(bytes: number): string {
   return bytes + ' B';
 }
 
+// 自适应标签：按块大小降字号，能放下「名字 · 大小」就都画，
+// 放不下则退化为只画名字，再放不下就截断加省略号
+function drawLabel(ctx: CanvasRenderingContext2D, r: Rect) {
+  const pad = 4;
+  const levels: Array<{ fs: number; minH: number }> = [
+    { fs: 12, minH: 26 },
+    { fs: 11, minH: 20 },
+    { fs: 10, minH: 15 },
+  ];
+  for (const { fs, minH } of levels) {
+    if (r.w <= 26 || r.h < minH) continue;
+    ctx.font = `${fs}px sans-serif`;
+    const full = `${r.node.name} · ${fmtSize(r.node.size)}`;
+    if (ctx.measureText(full).width <= r.w - pad * 2) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(full, r.x + pad, r.y + pad + fs);
+      return;
+    }
+    if (ctx.measureText(r.node.name).width <= r.w - pad * 2) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(r.node.name, r.x + pad, r.y + pad + fs);
+      return;
+    }
+    // 名字过长：截断加省略号
+    let t = r.node.name;
+    while (t.length > 1 && ctx.measureText(t + '…').width > r.w - pad * 2) t = t.slice(0, -1);
+    if (t.length > 1) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(t + '…', r.x + pad, r.y + pad + fs);
+    }
+    return;
+  }
+}
+
 const MATCHED_COLORS = ['#c62828', '#d84315', '#ad1457'];
 const NORMAL_COLORS = ['#1a5276', '#21618c', '#2e86c1', '#3a7ca5', '#4a90b8'];
 const BORDER = '#0b1a2a';
@@ -141,7 +175,10 @@ export default function Treemap({ tree, onOpenPath, onAskAI, onSearch, onAddToLi
   const rects = useMemo(() => {
     const out: Rect[] = [];
     const minArea = (W * H) / 8000;
-    const roots = tree.children.filter((c) => c.size > 0).sort((a, b) => b.size - a.size);
+    // 左键钻取：以当前 root 的子树为布局源；root 为叶子时只画它自己
+    const base = root === tree ? tree : root;
+    const kids = base.children && base.children.length > 0 ? base.children : [base];
+    const roots = kids.filter((c) => c.size > 0).sort((a, b) => b.size - a.size);
     squarify(roots, 0, 0, W, H, 0, out, minArea);
     return out;
   }, [root, W, H, tree]);
@@ -162,13 +199,7 @@ export default function Treemap({ tree, onOpenPath, onAskAI, onSearch, onAddToLi
       ctx.strokeStyle = BORDER;
       ctx.lineWidth = 1;
       ctx.strokeRect(r.x, r.y, r.w, r.h);
-      if (r.w > 64 && r.h > 24) {
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '12px sans-serif';
-        const label = `${r.node.name} · ${fmtSize(r.node.size)}`;
-        const tw = ctx.measureText(label).width;
-        if (tw < r.w - 8) ctx.fillText(label, r.x + 4, r.y + 16);
-      }
+      drawLabel(ctx, r);
     }
   }, [rects, W, H]);
 
@@ -235,7 +266,7 @@ export default function Treemap({ tree, onOpenPath, onAskAI, onSearch, onAddToLi
         {root.path && (
           <a style={{ marginLeft: 12, cursor: 'pointer', color: '#8477ff' }} onClick={() => setRoot(tree)}>← 返回根</a>
         )}
-        <span style={{ marginLeft: 12, color: '#6b7291' }}>右键块可操作</span>
+        <span style={{ marginLeft: 12, color: '#6b7291' }}>左键钻取 · 右键可操作</span>
       </div>
 
       <div style={{ position: 'relative' }} onClick={() => setMenu(null)}>
