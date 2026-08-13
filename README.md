@@ -77,8 +77,21 @@
 
 ## 界面预览
 
-> 📸 截图占位：建议补充 `docs/screenshots/` 下的界面图（扫描页 Treemap、清理名单、卸载页），如：
-> `docs/screenshots/scan.png`、`docs/screenshots/treemap.png`、`docs/screenshots/uninstall.png`
+### 探索清理 · Treemap 磁盘热力图
+> 实测数据：共命中 **19 608.6 MB**（可删 18 917 / 需确认 1 643）· **144 422** 文件 · **31.1s** · **633** 疑似项
+> 红色 = 命中规则的疑似垃圾，蓝色 = 正常文件；点击钻取，右键菜单（问 AI / 搜索 / 加名单）
+
+![扫描页 — Treemap 磁盘热力图](docs/screenshots/scan.png)
+
+### 清理名单 · 一键清回回收站
+> **633 项 / 约 18 042 MB** 排队待清理 · 支持「删除选中」「一键清理全部可删项」「清空回收站」· 删除一律进系统回收站可恢复
+
+![清理名单 — 勾选删除走回收站](docs/screenshots/clean-list.png)
+
+### 卸载程序 · 一键扫真实占用
+> 从注册表读取 **249 个**已安装程序 · 「一键扫大小」算出每个程序的「安装 + 残留 = 真实占用」并按大小排序
+
+![卸载页 — 一键扫大小揪出最占空间的软件](docs/screenshots/uninstall.png)
 
 ---
 
