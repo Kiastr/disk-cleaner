@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button, Table, Tag, Space, Popconfirm, message, Typography, Empty, Modal } from 'antd';
 import { DeleteOutlined, ClearOutlined, StopOutlined } from '@ant-design/icons';
 import type { AppData, CleanItem } from '../types';
@@ -30,11 +30,22 @@ export default function CleanListPage({ data, refreshData }: { data: AppData; re
     }
   };
 
+  // 分类筛选：从现有名单动态取分类
+  const categoryFilters = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const i of data.cleanList) {
+      const c = i.category || '未分类';
+      map.set(c, (map.get(c) || 0) + 1);
+    }
+    return [...map.entries()].map(([text, n]) => ({ text: `${text}（${n}）`, value: text }));
+  }, [data.cleanList]);
+
   const columns = [
     { title: '路径', dataIndex: 'path', key: 'path', ellipsis: true, render: (p: string) => <Typography.Text style={{ fontFamily: 'monospace', fontSize: 12 }}>{p}</Typography.Text> },
     { title: '大小', dataIndex: 'sizeMB', key: 'sizeMB', width: 110, defaultSortOrder: 'descend' as const,
       sorter: (a: CleanItem, b: CleanItem) => (a.sizeMB || 0) - (b.sizeMB || 0), render: (m?: number) => (m ? `${m} MB` : '-') },
-    { title: '分类', dataIndex: 'category', key: 'category', width: 120 },
+    { title: '分类', dataIndex: 'category', key: 'category', width: 130, filters: categoryFilters,
+      onFilter: (v: any, item: CleanItem) => (item.category || '未分类') === v },
     { title: '风险', dataIndex: 'risk', key: 'risk', width: 90, render: (r: string) => <Tag color={RISK_COLOR[r]}>{RISK_LABEL[r]}</Tag> },
     { title: '备注', dataIndex: 'note', key: 'note', ellipsis: true },
     {
