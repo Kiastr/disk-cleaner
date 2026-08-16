@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Button, Table, Tag, Space, Popconfirm, message, Typography, Empty, Modal } from 'antd';
+import { Button, Table, Tag, Space, Popconfirm, message, Typography, Empty, Modal, Alert } from 'antd';
 import { DeleteOutlined, ClearOutlined, StopOutlined } from '@ant-design/icons';
 import type { AppData, CleanItem } from '../types';
 
@@ -73,6 +73,12 @@ export default function CleanListPage({ data, refreshData }: { data: AppData; re
     <div>
       <h1 className="page-title">清理名单</h1>
       <p className="page-desc">勾选要清理的项，删除走回收站可恢复；白名单中的路径永不删除</p>
+      <Alert
+        type="info"
+        showIcon
+        style={{ marginBottom: 12 }}
+        message="默认识别：缓存目录 / 临时目录 / 系统缓存 / 缩略图缓存 四类会在扫描后自动进入名单；日志、崩溃报告、垃圾文件等其他项需在扫描结果中手动「加入名单」。不含浏览器 Cookie 与历史记录。"
+      />
       <Space style={{ marginBottom: 12 }} wrap>
         <Typography.Text strong>清理名单（{data.cleanList.length} 项 · 约 {Math.round(totalMB)} MB）</Typography.Text>
         <Button type="primary" danger icon={<DeleteOutlined />} loading={deleting} disabled={selected.length === 0} onClick={() => doDelete(selected)}>
