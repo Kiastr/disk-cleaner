@@ -32,7 +32,8 @@ export default function CleanListPage({ data, refreshData }: { data: AppData; re
 
   const columns = [
     { title: '路径', dataIndex: 'path', key: 'path', ellipsis: true, render: (p: string) => <Typography.Text style={{ fontFamily: 'monospace', fontSize: 12 }}>{p}</Typography.Text> },
-    { title: '大小', dataIndex: 'sizeMB', key: 'sizeMB', width: 90, render: (m?: number) => (m ? `${m} MB` : '-') },
+    { title: '大小', dataIndex: 'sizeMB', key: 'sizeMB', width: 110, defaultSortOrder: 'descend' as const,
+      sorter: (a: CleanItem, b: CleanItem) => (a.sizeMB || 0) - (b.sizeMB || 0), render: (m?: number) => (m ? `${m} MB` : '-') },
     { title: '分类', dataIndex: 'category', key: 'category', width: 120 },
     { title: '风险', dataIndex: 'risk', key: 'risk', width: 90, render: (r: string) => <Tag color={RISK_COLOR[r]}>{RISK_LABEL[r]}</Tag> },
     { title: '备注', dataIndex: 'note', key: 'note', ellipsis: true },

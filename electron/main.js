@@ -106,10 +106,14 @@ app.whenReady().then(async () => {
         if (mainWindow) mainWindow.webContents.send('scan-progress', { files, current });
       },
     });
-    // 内置规则命中的 safe 项自动加入清理名单（相当于 CCleaner 默认勾选的清理项），无需二次点击
-    const safeHits = (result.hits || []).filter((h) => h.risk === 'safe').map((h) => ({
-      path: h.path, sizeMB: h.sizeMB, category: h.category, risk: 'safe', note: '内置规则命中（常见清理）',
-    }));
+    // 仅「缓存/临时」类 safe 项自动加入清理名单（对标 CCleaner/BleachBit 默认清理项），无需二次点击；
+    // 日志/崩溃报告/垃圾文件等其他 safe 项保留在扫描结果里，由用户手动「加入名单」
+    const AUTO_CATEGORIES = new Set(['缓存目录', '临时目录', '系统缓存', '缩略图缓存']);
+    const safeHits = (result.hits || [])
+      .filter((h) => h.risk === 'safe' && AUTO_CATEGORIES.has(h.category))
+      .map((h) => ({
+        path: h.path, sizeMB: h.sizeMB, category: h.category, risk: 'safe', note: '缓存/临时类（自动入名单）',
+      }));
     const auto = store.batchAddToCleanList(safeHits);
     result.autoAdded = auto.added;
     // 持久化扫描结果，切换页面/重启可恢复
