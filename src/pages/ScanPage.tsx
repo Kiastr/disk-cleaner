@@ -190,7 +190,7 @@ export default function ScanPage({ data, refreshData }: { data: AppData; refresh
         {result && (
           <div className="card" style={{ marginTop: 16 }}>
             <Typography.Text style={{ marginRight: 16 }}>
-              共命中 <b>{result.totalMB} MB</b>（可删 {result.byRisk.safe}MB / 需确认 {result.byRisk.warning}MB）· {result.filesScanned} 文件 · {result.elapsedSec}s
+              共命中 <b>{result.totalMB} MB</b>（可删 {((result.byRisk.safe || 0) / 1048576).toFixed(1)} MB / 需确认 {((result.byRisk.warning || 0) / 1048576).toFixed(1)} MB）· {result.filesScanned} 文件 · {result.elapsedSec}s
             </Typography.Text>
             <Segmented
               value={tab}
